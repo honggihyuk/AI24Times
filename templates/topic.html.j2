@@ -1,0 +1,26 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening %}
+
+{% block title %}{{ topics[slug].name }} · {{ site.name }}{% endblock %}
+{% block description %}{{ topics[slug].description }}{% endblock %}
+{% block body_class %}page-topic{% endblock %}
+
+{% block content %}
+{{ opening([(t("nav_topics"), "/topics/"), (topics[slug].name, none)], topics[slug].name, topics[slug].description ~ " · " ~ t("articles_n", n=items|length)) }}
+
+<main id="main" class="wrap one narrow">
+  {% if items %}
+  <ul class="line-list">
+    {% for a in items %}
+    <li>
+      <a class="d" href="{{ p }}/archive/{{ a.date }}.html#a{{ a.rank }}">{{ a.date }}</a>
+      <a class="h" href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a>
+      <span class="s">{{ a.source }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="sub">{{ t("topic_empty") }}</p>
+  {% endif %}
+</main>
+{% endblock %}

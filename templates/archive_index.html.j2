@@ -1,0 +1,37 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening, sec_head %}
+
+{% block title %}{{ t("nav_briefings") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("archive_meta", name=site.name, n=total) }}{% endblock %}
+{% block body_class %}page-archive{% endblock %}
+
+{% block content %}
+{{ opening([(t("nav_briefings"), none)], t("nav_briefings"), t("archive_lead", n=total)) }}
+
+<main id="main" class="wrap one narrow">
+  <div class="search">
+    <label class="visually-hidden" for="search-input">{{ t("search_label") }}</label>
+    <input class="search-input" id="search-input" type="search" placeholder="{{ t('search_placeholder') }}" autocomplete="off"
+           data-found="{{ t('search_found') }}" data-more="{{ t('search_more') }}" data-none="{{ t('search_none') }}" data-error="{{ t('search_error') }}">
+    <p class="search-status" id="search-status" aria-live="polite"></p>
+    <ul class="line-list" id="search-results"></ul>
+  </div>
+
+  {% for month, items in by_month.items() %}
+  <section class="month" aria-labelledby="m-{{ month }}">
+    {{ sec_head(month|month_label, t("issues_n", n=items|length), id="m-" ~ month) }}
+    <ul class="issue-list">
+      {% for b in items %}
+      <li>
+        <a href="{{ p }}/archive/{{ b.date }}.html">
+          <time datetime="{{ b.date }}">{{ b.date|dotdate }}</time>
+          <span class="h">{{ b.insight.headline }}</span>
+          <span class="n">{{ t("issue_meta", no=b.no, n=b.articles|length) }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+</main>
+{% endblock %}

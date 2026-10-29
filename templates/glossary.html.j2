@@ -1,0 +1,21 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening %}
+
+{% block title %}{{ t("nav_glossary") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("glossary_lead", n=glossary|length) }}{% endblock %}
+{% block body_class %}page-glossary{% endblock %}
+
+{% block content %}
+{{ opening([(t("nav_glossary"), none)], t("nav_glossary"), t("glossary_lead", n=glossary|length)) }}
+
+<main id="main" class="wrap one narrow">
+  <dl class="glossary">
+    {% for slug, g in glossary.items() %}
+    <div class="glossary-item" id="{{ slug }}">
+      <dt>{{ g.name }}{% if g.alt %}<span class="en">{{ g.alt }}</span>{% endif %}</dt>
+      <dd>{{ g.body }}</dd>
+    </div>
+    {% endfor %}
+  </dl>
+</main>
+{% endblock %}

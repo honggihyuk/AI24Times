@@ -1,0 +1,39 @@
+{
+  "name": "AI24Times",
+  "tagline": "지난 24시간의 AI 소식, 아침 10분이면 정리됩니다",
+  "tagline_en": "The last 24 hours of AI news, sorted in a 10-minute morning read",
+  "description": "AI24Times는 매일 아침 지난 24시간 동안 나온 AI 소식을 골라 요약하고, 왜 중요한지 짚어 드립니다.",
+  "description_en": "Every morning, AI24Times picks the AI news of the last 24 hours, summarizes it, and explains why it matters.",
+  "base_url": "https://ai24times.example",
+  "publish_hour_kst": 7,
+  "author": {
+    "name": "Nathan Hong",
+    "role": "AI24Times 운영 · 서울",
+    "role_en": "Runs AI24Times · Seoul",
+    "bio": "매일 아침 AI 소식을 골라 정리하고, 직접 만든 작업은 기획부터 완성까지의 과정을 함께 기록합니다.",
+    "bio_en": "I sort the AI news every morning, and write down how my own projects get made, from planning to launch.",
+    "links": []
+  },
+  "topics": {
+    "models": {
+      "name": "모델·연구", "name_en": "Models & research",
+      "description": "새 모델 공개, 벤치마크, 연구 논문", "description_en": "New models, benchmarks and papers"
+    },
+    "products": {
+      "name": "제품·서비스", "name_en": "Products",
+      "description": "사람들이 실제로 쓰는 AI 제품의 변화", "description_en": "Changes in the AI products people actually use"
+    },
+    "business": {
+      "name": "산업·투자", "name_en": "Business",
+      "description": "투자, 인수, 실적, 인프라", "description_en": "Funding, deals, earnings and infrastructure"
+    },
+    "policy": {
+      "name": "정책·규제", "name_en": "Policy",
+      "description": "각국 정부와 기관의 AI 규칙", "description_en": "AI rules from governments and agencies"
+    },
+    "safety": {
+      "name": "안전·신뢰", "name_en": "Safety & trust",
+      "description": "오용, 보안, 평가, 저작권", "description_en": "Misuse, security, evaluation and copyright"
+    }
+  }
+}

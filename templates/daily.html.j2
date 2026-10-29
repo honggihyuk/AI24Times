@@ -1,0 +1,79 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening, sec_head, story %}
+
+{% block title %}{{ b.insight.headline }} · {{ site.name }} {{ b.date }}{% endblock %}
+{% block description %}{{ b.insight.body[-1] }}{% endblock %}
+{% block body_class %}page-daily{% endblock %}
+
+{% block content %}
+{% set kicker %}{{ b.date|kdate }} · {{ t("issue_no", n=b.no) }} · {{ t("reading", n=reading_min) }}{% if b.get("stats") %} · {{ t("picked", scanned=b.stats.scanned|comma, n=b.articles|length) }}{% endif %}{% endset %}
+{{ opening([(t("nav_briefings"), "/archive/"), (b.date, none)], b.insight.headline, kicker=kicker) }}
+
+<div class="wrap two">
+  <main id="main">
+    <section class="insight" aria-label="{{ t('flow') }}">
+      <p class="insight-label">{{ t("flow") }}</p>
+      <div class="insight-body">
+        {% for para in b.insight.body %}<p>{{ para|link_terms }}</p>{% endfor %}
+      </div>
+      {% if b.insight.get("watch") %}<p class="watch"><b>{{ t("watch") }}</b>{{ b.insight.watch }}</p>{% endif %}
+    </section>
+
+    <section class="block" aria-labelledby="sec-articles">
+      {{ sec_head(t("stories_title", n=b.articles|length), t("stories_desc"), id="sec-articles") }}
+      {% for a in b.articles %}{{ story(a, topics) }}{% endfor %}
+    </section>
+
+    {% if b.korea %}
+    <section class="extra" aria-labelledby="sec-korea">
+      {{ sec_head(t("korea"), t("korea_desc"), id="sec-korea") }}
+      <ul class="korea-list">
+        {% for k in b.korea %}
+        <li>
+          <a href="{{ k.url }}" target="_blank" rel="noopener">{{ k.title }}</a>
+          <p>{{ k.summary }}</p>
+          <p class="sub">{{ k.source }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    {% if terms %}
+    <section class="extra" aria-labelledby="sec-terms">
+      {{ sec_head(t("terms_title"), none, "/glossary.html", t("all_terms"), id="sec-terms") }}
+      <ul class="term-chips">
+        {% for slug, g in terms.items() %}<li><button type="button" class="term chip" data-term="{{ slug }}">{{ g.name }}</button></li>{% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <nav class="pager" aria-label="{{ t('pager_issues') }}">
+      {% if older %}<a href="{{ p }}/archive/{{ older.date }}.html"><span>{{ t("prev_issue") }} · {{ older.date }}</span>{{ older.insight.headline }}</a>{% endif %}
+      {% if newer %}<a class="next" href="{{ p }}/archive/{{ newer.date }}.html"><span>{{ t("next_issue") }} · {{ newer.date }}</span>{{ newer.insight.headline }}</a>{% endif %}
+    </nav>
+  </main>
+
+  <aside class="side" aria-label="{{ t('side_label') }}">
+    <nav class="box sticky toc" aria-label="{{ t('toc_label') }}">
+      <p class="sh">{{ t("toc_title") }}</p>
+      <ol class="side-list toc-list">
+        {% for a in b.articles %}<li><a href="#a{{ a.rank }}">{{ a.title }}</a></li>{% endfor %}
+      </ol>
+    </nav>
+  </aside>
+</div>
+{% endblock %}
+
+{% block overlays %}
+<div class="term-backdrop" id="term-backdrop" hidden></div>
+<aside class="term-panel" id="term-panel" role="dialog" aria-modal="true" aria-labelledby="term-panel-title" hidden>
+  <button type="button" class="term-panel-close" id="term-panel-close" aria-label="{{ t('close') }}">×</button>
+  <p class="label">{{ t("term_label") }}</p>
+  <h2 id="term-panel-title"></h2>
+  <p class="en" id="term-panel-en"></p>
+  <p class="body" id="term-panel-body"></p>
+  <a class="more" id="term-panel-more" href="{{ p }}/glossary.html">{{ t("all_terms_arrow") }}</a>
+</aside>
+<script type="application/json" id="glossary-data">{{ terms|tojson }}</script>
+{% endblock %}

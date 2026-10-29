@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ai24times",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8024", "--directory", "dist"],
+      "port": 8024
+    }
+  ]
+}

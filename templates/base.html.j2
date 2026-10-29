@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="{{ lang }}" data-prefix="{{ p }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+  {# 번역되지 않은 영어 페이지는 한국어 원문과 내용이 같다. 중복 문서로 검색에 잡히지 않게 뺀다. #}
+  {% if not translated %}<meta name="robots" content="noindex, follow">{% endif %}
+  <link rel="canonical" href="{{ site.base_url }}{{ canonical_path }}">
+  {% for code, path in alternates.items() %}
+  <link rel="alternate" hreflang="{{ code }}" href="{{ site.base_url }}{{ path }}">
+  {% endfor %}
+  <link rel="alternate" hreflang="x-default" href="{{ site.base_url }}{{ alternates['ko'] }}">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{{ 'en_US' if lang == 'en' else 'ko_KR' }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ site.base_url }}{{ canonical_path }}">
+  <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ p }}/feed.xml">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  {# 테마는 첫 화면을 그리기 전에 정해야 깜빡이지 않는다. 그래서 site.js 가 아니라 여기에 둔다. #}
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("ai24-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main">{{ t("skip") }}</a>
+
+  <header class="bar">
+    <div class="wrap bar-in">
+      <a class="sig" href="{{ p }}/" aria-label="{{ t('home_aria', name=site.name) }}">AI<i class="grad">24</i>Times</a>
+      <nav class="bar-nav" aria-label="{{ t('nav_label') }}">
+        <a href="{{ p }}/archive/" {% if nav == "archive" %}aria-current="page"{% endif %}>{{ t("nav_briefings") }}</a>
+        <a href="{{ p }}/topics/" {% if nav == "topics" %}aria-current="page"{% endif %}>{{ t("nav_topics") }}</a>
+        <a href="{{ p }}/glossary.html" {% if nav == "glossary" %}aria-current="page"{% endif %}>{{ t("nav_glossary") }}</a>
+        <a href="{{ p }}/work/" {% if nav == "work" %}aria-current="page"{% endif %}>{{ t("nav_work") }}</a>
+      </nav>
+      <form class="bar-q" action="{{ p }}/archive/" method="get" role="search">
+        <label class="visually-hidden" for="bar-q">{{ t("search_label") }}</label>
+        <input id="bar-q" name="q" type="search" placeholder="{{ t('search_label') }}">
+      </form>
+      <div class="bar-tools">
+        {# 클립보드를 쓸 수 없는 환경에서는 눌러도 아무 일이 없으니 숨긴 채로 두고, site.js 가 확인 후 보여 준다. #}
+        <div class="copy-wrap">
+          <button class="icon-btn" id="copy-link" type="button" aria-label="{{ t('copy_label') }}" title="{{ t('copy_label') }}" data-copied="{{ t('copied') }}" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/>
+              <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>
+            </svg>
+          </button>
+          {# 처음에는 비워 둔다. 복사한 순간 글자가 들어가야 화면 읽기 프로그램이 알려 준다. #}
+          <span class="copy-tip" id="copy-tip" role="status" aria-live="polite"></span>
+        </div>
+        <a class="lang-switch" href="{{ alternates[alt_lang] }}" hreflang="{{ alt_lang }}" lang="{{ alt_lang }}" rel="alternate"
+           aria-label="{{ t('lang_switch_label') }}" title="{{ t('lang_switch_label') }}" data-lang-switch>{{ t("lang_switch_text") }}</a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="{{ t('theme_label') }}" title="{{ t('theme_label') }}">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  {% if not translated %}
+  <p class="untranslated"><span class="wrap">{{ t("not_translated") }}</span></p>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <span>{{ site.name }} · {{ site.author.name }}</span>
+      <span>{{ t("footer_published", hh="%02d"|format(site.publish_hour_kst)) }} · {{ t("footer_built", when=built_at.strftime("%Y-%m-%d %H:%M")) }}</span>
+      <span class="foot-links">
+        <a href="{{ p }}/archive/">{{ t("nav_briefings") }}</a>
+        <a href="{{ p }}/work/">{{ t("nav_work") }}</a>
+        <a href="{{ p }}/feed.xml">RSS</a>
+      </span>
+    </div>
+  </footer>
+
+  {% block overlays %}{% endblock %}
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

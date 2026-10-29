@@ -1,0 +1,24 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening %}
+
+{% block title %}{{ t("nav_topics") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("topics_lead") }}{% endblock %}
+{% block body_class %}page-topics{% endblock %}
+
+{% block content %}
+{{ opening([(t("nav_topics"), none)], t("nav_topics"), t("topics_lead")) }}
+
+<main id="main" class="wrap one">
+  <ul class="topic-grid">
+    {% for slug, topic in topics.items() %}
+    <li>
+      <a href="{{ p }}/topics/{{ slug }}.html">
+        <span class="n">{{ topic.name }}</span>
+        <span class="d">{{ topic.description }}</span>
+        <span class="c">{{ t("articles_n", n=by_topic[slug]|length) }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</main>
+{% endblock %}

@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-28",
+  "stats": { "scanned": 980, "candidates": 55 },
+  "insight": {
+    "headline": "[예시] 에이전트가 '확인 버튼' 뒤로 들어온 하루",
+    "body": [
+      "이 브리핑은 레이아웃을 확인하기 위한 예시 데이터입니다. 실제 뉴스가 아닙니다.",
+      "예시로 넣은 기사들은 에이전트가 사람의 확인을 거쳐 행동하는 방식으로 제품에 들어오는 모습을 보여 줍니다."
+    ]
+  },
+  "articles": [
+    {
+      "rank": 1,
+      "title": "[예시] 브라우저 회사, 사이트를 대신 조작하는 에이전트 미리보기 공개",
+      "source": "Example Browser Blog",
+      "url": "https://example.com/browser/1",
+      "published": "2026-10-27",
+      "topic": "products",
+      "official": true,
+      "summary": "가상의 브라우저 회사가 웹사이트를 대신 클릭하고 입력하는 에이전트 기능을 미리보기로 공개했다는 예시 기사입니다.",
+      "implication": "결제나 전송 같은 되돌릴 수 없는 동작을 어떻게 막는지가 제품 신뢰를 가를 것입니다."
+    },
+    {
+      "rank": 2,
+      "title": "[예시] 오픈 웨이트 모델 다운로드 수, 처음으로 상용 API 호출 수 추월",
+      "source": "Example Data Desk",
+      "url": "https://example.org/data/2",
+      "published": "2026-10-27",
+      "topic": "models",
+      "summary": "가상의 조사 기관이 지난달 오픈 웨이트 모델 다운로드 수가 상용 API 호출 수를 넘었다고 집계했다는 예시 기사입니다.",
+      "implication": "집계 방식이 서로 달라 직접 비교는 어렵지만, 직접 돌리는 수요가 커지고 있다는 점은 분명합니다."
+    },
+    {
+      "rank": 3,
+      "title": "[예시] AI 스타트업, 데이터센터 전력 계약에 대규모 투자 유치",
+      "source": "Example Tech News",
+      "url": "https://example.org/news/3",
+      "published": "2026-10-26",
+      "topic": "business",
+      "summary": "가상의 AI 스타트업이 데이터센터 전력 장기 계약을 위해 대규모 투자를 받았다는 예시 기사입니다.",
+      "implication": "AI 경쟁에서 칩만큼 전력이 병목이 되고 있습니다."
+    }
+  ]
+}

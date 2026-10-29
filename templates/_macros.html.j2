@@ -1,0 +1,70 @@
+{# 페이지 머리: 빵부스러기 + 제목 + 설명. crumbs 의 href 는 언어 앞부분을 뺀 주소. #}
+{% macro opening(crumbs, title, lead=none, kicker=none) %}
+<div class="wrap opening">
+  <nav class="crumbs" aria-label="{{ t('crumbs_label') }}">
+    <a href="{{ p }}/">{{ t("home") }}</a>
+    {% for label, href in crumbs %}
+    <span aria-hidden="true">/</span>
+    {% if href %}<a href="{{ href|local }}">{{ label }}</a>{% else %}<span aria-current="page">{{ label }}</span>{% endif %}
+    {% endfor %}
+  </nav>
+  {% if kicker %}<p class="k">{{ kicker }}</p>{% endif %}
+  <h1>{{ title }}</h1>
+  {% if lead %}<p class="lead">{{ lead }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# 섹션 머리: 제목 + 설명 + 오른쪽 "전체 보기" #}
+{% macro sec_head(title, desc=none, more_href=none, more_label=none, id=none) %}
+<div class="sec-head">
+  <div>
+    <h2{% if id %} id="{{ id }}"{% endif %}>{{ title }}</h2>
+    {% if desc %}<p>{{ desc }}</p>{% endif %}
+  </div>
+  {% if more_href %}<a href="{{ more_href|local }}">{{ more_label }}</a>{% endif %}
+</div>
+{% endmacro %}
+
+{# 작업 스크린샷. 이미지가 없으면 그라데이션 판에 제목을 쓴다. #}
+{% macro shot(w, tone=0, src=none, alt=none, lazy=true) %}
+{% set image = src or w.get("cover") %}
+{% if image %}
+<div class="shot"><img src="{{ image }}" alt="{{ alt or t('shot_alt', title=w.title) }}"{% if lazy %} loading="lazy"{% endif %}></div>
+{% else %}
+<div class="shot mesh tone-{{ tone % 3 }}" aria-hidden="true"><span class="shot-title">{{ w.title }}</span></div>
+{% endif %}
+{% endmacro %}
+
+{# 작업 진행 상태 배지 #}
+{% macro status(w) %}
+<span class="status{% if w.status == 'in_progress' %} status-live{% endif %}">{{ t("status_" ~ w.status) }}</span>
+{% endmacro %}
+
+{# 하루치 브리핑의 기사 한 건 #}
+{% macro story(a, topics) %}
+<article class="story" id="a{{ a.rank }}">
+  <p class="sub">
+    <span class="rank">{{ "%02d"|format(a.rank) }}</span>
+    <a class="chip" href="{{ p }}/topics/{{ a.topic }}.html">{{ topics[a.topic].name }}</a>
+    <span>{{ a.source }}</span>
+    {% if a.get("official") %}<span class="flag">{{ t("official") }}</span>{% endif %}
+    {% if a.get("coverage", 0) > 1 %}<span>{{ t("coverage", n=a.coverage) }}</span>{% endif %}
+    {% if a.get("published") %}<span>{{ a.published }}</span>{% endif %}
+  </p>
+  <h2><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}<span class="visually-hidden"> {{ t("new_window_original") }}</span></a></h2>
+  {% if a.get("title_original") and a.title_original != a.title %}<p class="original" lang="en">{{ a.title_original }}</p>{% endif %}
+  <p class="summary">{{ a.summary|link_terms }}</p>
+  {% if a.get("implication") %}
+  <details class="why">
+    <summary>{{ t("why") }}</summary>
+    <p>{{ a.implication|link_terms }}</p>
+  </details>
+  {% endif %}
+  {% if a.get("related") %}
+  <p class="related">
+    {{ t("related") }} ·
+    {% for r in a.related %}<a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+  </p>
+  {% endif %}
+</article>
+{% endmacro %}

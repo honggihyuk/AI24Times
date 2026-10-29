@@ -1,0 +1,191 @@
+{
+  "title": "AI24Times 데일리 AI 브리핑",
+  "title_en": "AI24Times daily AI briefing",
+  "category": "개인 프로젝트 · 웹사이트",
+  "category_en": "Personal project · Website",
+  "summary": "하루 동안 나온 AI 소식 중 10건을 골라 요약하고, 왜 중요한지 짚는 브리핑 사이트입니다. 기획부터 디자인, 개발까지 혼자 진행하고 있습니다.",
+  "summary_en": "A briefing site that picks 10 AI stories from the day, summarizes them and explains why they matter. I'm planning, designing and building it on my own.",
+  "tagline": "매일 쏟아지는 AI 소식을, 아침 10분 분량으로.",
+  "tagline_en": "The daily flood of AI news, in a 10-minute morning read.",
+  "status": "in_progress",
+  "featured": true,
+  "cover": "/assets/work/ai24times/v2-home.jpg",
+  "order": 1,
+  "role": ["기획", "디자인", "개발"],
+  "role_en": ["Planning", "Design", "Development"],
+  "stack": ["Python", "Jinja2", "HTML·CSS", "JavaScript"],
+  "links": [
+    { "label": "사이트 보기", "label_en": "Visit the site", "url": "/" }
+  ],
+  "story": [
+    {
+      "heading": "어떤 문제를 풀었나요?",
+      "heading_en": "What problem does it solve?",
+      "body": [
+        "AI 소식은 하루에도 수백 건씩 나오지만, 무엇이 중요한지 고르는 데 시간이 많이 듭니다.",
+        "매일 아침 정해진 분량만 읽으면 흐름을 놓치지 않도록, 고르고 요약하고 의미를 짚는 일을 한곳에 모았습니다."
+      ],
+      "body_en": [
+        "Hundreds of AI stories come out every day, and picking out what matters takes a lot of time.",
+        "This site does the picking, summarizing and explaining in one place, so a fixed amount of reading each morning is enough to keep up."
+      ]
+    },
+    {
+      "heading": "직접 맡은 범위",
+      "heading_en": "What I did",
+      "body": [
+        "참고 사이트 분석, 데이터 형식 설계, 정적 사이트 생성기, 화면 디자인, 검색과 용어 설명 같은 화면 기능까지 모두 직접 만들었습니다."
+      ],
+      "body_en": [
+        "Everything: studying reference sites, designing the data format, the static site generator, the visual design, and on-page features like search and term explanations."
+      ]
+    },
+    {
+      "heading": "지금까지의 결과",
+      "heading_en": "Where it stands",
+      "body": [
+        "JSON 파일 하나를 넣으면 오늘자 브리핑, 지난 호, 주제별 모음, 용어사전, RSS가 한 번에 만들어집니다. 서버 없이 어떤 정적 호스팅에도 올릴 수 있습니다."
+      ],
+      "body_en": [
+        "Drop in one JSON file and the daily briefing, archive, topic pages, glossary and RSS feed are all built at once, in Korean and English. It runs on any static host with no server."
+      ]
+    }
+  ],
+  "process": [
+    {
+      "date": "2026-10-29",
+      "phase": "조사",
+      "phase_en": "Research",
+      "title": "매일 발행되는 브리핑 사이트의 구조 분석",
+      "title_en": "Studying how a daily briefing site is built",
+      "body": [
+        "비슷한 형식으로 매일 발행되는 AI 브리핑 사이트를 골라 페이지 구성, 주소 체계, 사용 기술을 살펴봤습니다.",
+        "하루에 한 번만 바뀌는 콘텐츠라서 서버나 프레임워크 없이 정적 HTML로 충분하다는 결론을 냈습니다."
+      ],
+      "body_en": [
+        "I picked an AI briefing site published daily in a similar format and looked at its page layout, URL structure and tech stack.",
+        "Since the content changes only once a day, I concluded that static HTML was enough, with no server or framework."
+      ],
+      "decisions": [
+        "프레임워크 없이 Python 스크립트로 정적 HTML 생성",
+        "하루치 브리핑은 JSON 파일 하나로 저장",
+        "자바스크립트가 꺼져 있어도 본문은 모두 읽히게"
+      ],
+      "decisions_en": [
+        "Generate static HTML with a Python script, no framework",
+        "Store each day's briefing as a single JSON file",
+        "Keep every story readable with JavaScript turned off"
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "phase": "개발",
+      "phase_en": "Build",
+      "title": "정적 사이트 생성기 첫 버전",
+      "title_en": "First version of the static site generator",
+      "body": [
+        "Jinja 템플릿으로 오늘자, 지난 호, 주제별, 용어사전, RSS를 만드는 빌드 스크립트를 작성했습니다.",
+        "본문에 용어사전 단어가 나오면 빌드할 때 자동으로 설명 버튼을 붙이고, 누르면 옆 패널에서 뜻을 보여 줍니다."
+      ],
+      "body_en": [
+        "I wrote a build script that uses Jinja templates to produce the daily page, archive, topic pages, glossary and RSS feed.",
+        "When a glossary term appears in a story, the build turns it into a button that opens a side panel with the definition."
+      ],
+      "decisions": [
+        "데이터 검증을 빌드 첫 단계에 두고, 틀리면 파일 이름과 위치를 알려 주며 멈춤",
+        "색·크기·간격은 디자인 토큰 파일 한 곳에서만 관리"
+      ],
+      "decisions_en": [
+        "Validate data first; on an error, stop and name the file and field",
+        "Keep colors, sizes and spacing in a single design-token file"
+      ],
+      "learned": [
+        "좁은 화면에서 로고 글자가 두 줄로 깨지는 문제를 실제 화면에서 확인하고 고쳤습니다. 미리보기로 직접 보는 단계가 꼭 필요했습니다."
+      ],
+      "learned_en": [
+        "On narrow screens the logo wrapped onto two lines. I only caught it by looking at the real page, so checking in a preview has to be part of every step."
+      ],
+      "images": [
+        {
+          "src": "/assets/work/ai24times/v1-desktop.jpg",
+          "caption": "첫 버전 데스크톱 화면 (다크 모드)",
+          "caption_en": "First version on desktop (dark mode)"
+        },
+        {
+          "src": "/assets/work/ai24times/v1-term-panel.jpg",
+          "caption": "용어를 누르면 열리는 설명 패널",
+          "caption_en": "The panel that opens when you tap a term"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "phase": "디자인",
+      "phase_en": "Design",
+      "title": "블로그형 홈과 작업 사례 추가",
+      "title_en": "A blog-style home and a work section",
+      "body": [
+        "첫 화면을 하루치 브리핑 대신 최근 브리핑을 넘겨 보는 배너, 브리핑 목록, 사이드바로 바꿔 여러 호를 한눈에 볼 수 있게 했습니다.",
+        "개인 작업을 결과물뿐 아니라 과정까지 남길 수 있도록, 단계별로 날짜·결정·배운 점·스크린샷을 적는 작업 사례 페이지를 만들었습니다."
+      ],
+      "body_en": [
+        "I replaced the single-day home page with a banner that flips through recent briefings, a list of issues and a sidebar, so several issues are visible at a glance.",
+        "To record the process behind personal projects, not just the result, I added work pages where each step has a date, decisions, lessons and screenshots."
+      ],
+      "decisions": [
+        "흰 바탕과 얇은 회색 선 위주로 정리하고, 색은 배너 그라데이션에만 사용",
+        "작업 하나도 JSON 파일 하나로 관리하고, 과정은 날짜순 타임라인으로 표시"
+      ],
+      "decisions_en": [
+        "White background and thin gray rules, with color only in the banner gradient",
+        "One JSON file per project, with the process shown as a dated timeline"
+      ],
+      "images": [
+        {
+          "src": "/assets/work/ai24times/v2-home.jpg",
+          "caption": "바뀐 홈: 최근 브리핑 배너, 브리핑 목록, 사이드바",
+          "caption_en": "The new home: recent-briefing banner, issue list and sidebar"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "phase": "개발",
+      "phase_en": "Build",
+      "title": "링크 복사와 한국어·영어 전환",
+      "title_en": "Copy link and Korean/English switch",
+      "body": [
+        "상단 바에 현재 페이지 링크를 복사하는 버튼과 한국어·영어를 오가는 버튼을 넣었습니다.",
+        "언어마다 정적 페이지를 따로 만들어 /en/ 아래에 두고, 번역이 아직 없는 콘텐츠는 한국어 원문을 보여 주며 검색엔진에는 노출하지 않습니다."
+      ],
+      "body_en": [
+        "I added two buttons to the top bar: one copies the link to the current page, the other switches between Korean and English.",
+        "Each language gets its own static pages, with English under /en/. Content that hasn't been translated yet shows the Korean original and is hidden from search engines."
+      ],
+      "decisions": [
+        "화면 문구는 data/ui.json 한 곳에서 관리",
+        "콘텐츠 번역은 같은 파일 안에 title_en 처럼 _en 필드로 추가"
+      ],
+      "decisions_en": [
+        "Keep all interface text in data/ui.json",
+        "Add content translations in the same file as _en fields, like title_en"
+      ]
+    }
+  ],
+  "retrospective": {
+    "good": [
+      "콘텐츠와 화면을 분리해 두어서 디자인을 통째로 바꿔도 데이터는 그대로 쓸 수 있었습니다."
+    ],
+    "good_en": [
+      "Keeping content separate from layout meant I could replace the whole design without touching the data."
+    ],
+    "next": [
+      "기사를 모으고 고르는 수집 단계 자동화",
+      "이메일 구독과 공유용 대표 이미지"
+    ],
+    "next_en": [
+      "Automate collecting and picking stories",
+      "Email subscription and share images"
+    ]
+  }
+}

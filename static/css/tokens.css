@@ -1,0 +1,107 @@
+/* AI24Times 디자인 토큰.
+ * 색·글꼴·크기·간격은 여기서만 정한다. site.css 에는 리터럴 값을 쓰지 않는다.
+ * 흰 바탕에 검정 글자, 얇은 회색 선, 제목은 짙은 회청색. 색은 배너 그라데이션에만 쓴다.
+ * 다크 모드는 두 경로로 켜진다: OS 설정(prefers-color-scheme)과 사용자가 고른 값(data-theme).
+ * 사용자가 "밝게"를 고르면 OS가 다크여도 밝게 보여야 하므로 :not([data-theme="light"]) 로 막는다. */
+
+:root {
+  /* 색 */
+  --c-bg: #ffffff;
+  --c-ink: #000000;           /* 가장 진한 글자, 활성 메뉴 */
+  --c-head: #434a53;          /* 제목 */
+  --c-body: #666666;          /* 요약·본문 보조 */
+  --c-mute: #6b6b6b;          /* 메뉴, 설명 */
+  --c-faint: #737373;         /* 날짜·메타 */
+  --c-line: #ededed;          /* 목록 사이 선 */
+  --c-rule: #d6d6d6;          /* 사이드 박스 위 선, 바닥 선 */
+  --c-wash: #f3f5f8;          /* 옅은 바탕 (인사이트, 단계 메모) */
+  --c-live: #1b3a6b;          /* 텍스트 링크 */
+  --c-button: #a0a0a0;        /* 사이드 박스 버튼 */
+  --c-on-dark: #ffffff;
+  --c-backdrop: rgb(10 12 16 / 0.45);
+
+  /* 배너·썸네일 그라데이션 */
+  --mesh-a: #1b3a6b;
+  --mesh-b: #4c6fff;
+  --mesh-c: #9db4ff;
+  --brand-gradient: linear-gradient(120deg, #1b3a6b 0%, #4f6bff 45%, #9b6bff 75%, #ff8fb1 100%);
+
+  /* 글꼴 */
+  --font-sans: "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --tracking: -0.022em;
+
+  /* 글자 크기 */
+  --fs-xs: 12px;
+  --fs-sm: 13.5px;
+  --fs-md: 15px;
+  --fs-base: 16px;
+  --fs-lg: 18px;
+  --fs-row: 23px;             /* 목록 제목 */
+  --fs-sec: 25px;             /* 섹션 제목 */
+  --fs-hero: 32px;            /* 배너·페이지 제목 */
+
+  /* 간격 */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 72px;
+
+  /* 폭 */
+  --wrap: 1180px;
+  --wrap-pad: 28px;
+  --side: 280px;
+  --col-gap: 54px;
+  --measure: 44rem;
+  --bar-h: 60px;
+
+  --radius: 3px;
+  --shadow-panel: 0 12px 40px rgb(0 0 0 / 0.16);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --wrap-pad: 16px;
+    --fs-row: 19px;
+    --fs-sec: 21px;
+    --fs-hero: 24px;
+  }
+}
+
+/* 다크 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --c-bg: #0f1114;
+    --c-ink: #f2f3f5;
+    --c-head: #d9dde3;
+    --c-body: #a3a8b0;
+    --c-mute: #9aa0a8;
+    --c-faint: #8a9099;
+    --c-line: #23262c;
+    --c-rule: #33373e;
+    --c-wash: #181b20;
+    --c-live: #9db4ff;
+    --c-button: #3a3e46;
+    --c-backdrop: rgb(0 0 0 / 0.6);
+    --shadow-panel: 0 12px 40px rgb(0 0 0 / 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  --c-bg: #0f1114;
+  --c-ink: #f2f3f5;
+  --c-head: #d9dde3;
+  --c-body: #a3a8b0;
+  --c-mute: #9aa0a8;
+  --c-faint: #8a9099;
+  --c-line: #23262c;
+  --c-rule: #33373e;
+  --c-wash: #181b20;
+  --c-live: #9db4ff;
+  --c-button: #3a3e46;
+  --c-backdrop: rgb(0 0 0 / 0.6);
+  --shadow-panel: 0 12px 40px rgb(0 0 0 / 0.5);
+}

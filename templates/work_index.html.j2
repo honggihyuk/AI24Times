@@ -1,0 +1,35 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening, shot, status %}
+
+{% block title %}{{ t("work_page") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("work_meta") }}{% endblock %}
+{% block body_class %}page-work{% endblock %}
+
+{% block content %}
+{{ opening([(t("work_page"), none)], t("work_page"), t("work_lead")) }}
+
+<main id="main" class="wrap">
+  {% for w in works %}
+  <article class="work-item" id="work-{{ w.slug }}">
+    <a href="{{ p }}/work/{{ w.slug }}.html" tabindex="-1" aria-hidden="true">{{ shot(w, loop.index0) }}</a>
+    <div>
+      <span class="cat">{{ w.category }}</span>
+      <h2><a href="{{ p }}/work/{{ w.slug }}.html">{{ w.title }}</a></h2>
+      <p class="desc">{{ w.summary }}</p>
+      {% if w.stack %}<p class="stack">{{ w.stack|join(" · ") }}</p>{% endif %}
+      <p class="progress">
+        {{ status(w) }}
+        {{ w.started|dotmonth }}{% if w.updated[:7] != w.started[:7] %} – {{ w.updated|dotmonth }}{% endif %}
+        · {{ w.phases|join(" → ") }}
+      </p>
+      <div class="actions">
+        <a class="btn" href="{{ p }}/work/{{ w.slug }}.html">{{ t("see_process") }}</a>
+        {% for l in w.links %}<a class="text-link" href="{{ l.url|local }}"{% if l.url.startswith("http") %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}{% if l.url.startswith("http") %} ↗{% endif %}</a>{% endfor %}
+      </div>
+    </div>
+  </article>
+  {% else %}
+  <p class="sub">{{ t("no_work") }}</p>
+  {% endfor %}
+</main>
+{% endblock %}

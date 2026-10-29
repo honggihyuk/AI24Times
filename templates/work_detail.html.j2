@@ -1,0 +1,116 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening, sec_head, shot, status %}
+
+{% block title %}{{ w.title }} · {{ t("work_page") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ w.summary }}{% endblock %}
+{% block body_class %}page-case{% endblock %}
+
+{% block content %}
+{{ opening([(t("work_page"), "/work/"), (w.title, none)], w.title, w.summary) }}
+
+<main id="main" class="wrap one narrow">
+  <article>
+    <p class="case-meta">
+      <span>{{ w.category }}</span>
+      <span>{{ w.started|dotmonth }}{% if w.updated[:7] != w.started[:7] %} – {{ w.updated|dotmonth }}{% endif %}</span>
+      {{ status(w) }}
+    </p>
+    {% if w.get("tagline") %}<h2 class="case-title">{{ w.tagline }}</h2>{% endif %}
+
+    <div class="case-cover">{{ shot(w, lazy=false) }}</div>
+
+    <dl class="facts">
+      <div><dt>{{ t("fact_role") }}</dt><dd>{{ w.role|join(", ") if w.role else "—" }}</dd></div>
+      <div><dt>{{ t("fact_period") }}</dt><dd>{{ w.started }} ~ {% if w.status == "in_progress" %}{{ t("status_in_progress") }}{% else %}{{ w.updated }}{% endif %}</dd></div>
+      <div><dt>{{ t("fact_stack") }}</dt><dd>{{ w.stack|join(", ") if w.stack else "—" }}</dd></div>
+      <div><dt>{{ t("fact_links") }}</dt><dd>
+        {% for l in w.links %}<a href="{{ l.url|local }}"{% if l.url.startswith("http") %} target="_blank" rel="noopener"{% endif %}>{{ l.label }}</a>{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}
+      </dd></div>
+    </dl>
+
+    {% if w.story %}
+    <div class="case-story">
+      {% for s in w.story %}
+      <section>
+        <h2>{{ s.heading }}</h2>
+        {% for para in s.body %}<p>{{ para }}</p>{% endfor %}
+      </section>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <section class="process" aria-labelledby="sec-process">
+      {{ sec_head(t("process_title"), t("process_desc", n=w.process|length, start=w.started, end=w.updated), id="sec-process") }}
+      <nav class="phase-nav" aria-label="{{ t('phase_nav') }}">
+        {% for s in w.process %}<a class="chip" href="#step-{{ loop.index }}">{{ "%02d"|format(loop.index) }} {{ s.phase }}</a>{% endfor %}
+      </nav>
+      <ol class="timeline">
+        {% for s in w.process %}
+        <li class="step" id="step-{{ loop.index }}">
+          <span class="step-no" aria-hidden="true">{{ "%02d"|format(loop.index) }}</span>
+          <div>
+            <p class="step-meta"><span class="phase">{{ s.phase }}</span><time datetime="{{ s.date }}">{{ s.date }}</time></p>
+            <h3>{{ s.title }}</h3>
+            {% if s.get("body") %}
+            <div class="step-text">{% for para in s.body %}<p>{{ para }}</p>{% endfor %}</div>
+            {% endif %}
+            {% if s.get("decisions") or s.get("learned") %}
+            <div class="notes">
+              {% if s.get("decisions") %}
+              <div class="note"><p class="note-label">{{ t("decisions") }}</p><ul>{% for d in s.decisions %}<li>{{ d }}</li>{% endfor %}</ul></div>
+              {% endif %}
+              {% if s.get("learned") %}
+              <div class="note"><p class="note-label">{{ t("learned") }}</p><ul>{% for d in s.learned %}<li>{{ d }}</li>{% endfor %}</ul></div>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if s.get("images") %}
+            <div class="shots">
+              {% for img in s.images %}
+              <figure>
+                <a href="{{ img.src }}" target="_blank" rel="noopener">{{ shot(w, src=img.src, alt=img.get("caption", "")) }}</a>
+                {% if img.get("caption") %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+              </figure>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    {% if w.gallery %}
+    <section class="gallery" aria-labelledby="sec-gallery">
+      {{ sec_head(t("gallery"), id="sec-gallery") }}
+      <div class="shots">
+        {% for img in w.gallery %}
+        <figure>
+          <a href="{{ img.src }}" target="_blank" rel="noopener">{{ shot(w, src=img.src, alt=img.get("caption", "")) }}</a>
+          {% if img.get("caption") %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% if w.get("retrospective") %}
+    <section class="retro" aria-label="{{ t('retro_label') }}">
+      {% if w.retrospective.get("good") %}
+      <div><h2>{{ t("retro_good") }}</h2><ul>{% for x in w.retrospective.good %}<li>{{ x }}</li>{% endfor %}</ul></div>
+      {% endif %}
+      {% if w.retrospective.get("next") %}
+      <div><h2>{{ t("retro_next") }}</h2><ul>{% for x in w.retrospective.next %}<li>{{ x }}</li>{% endfor %}</ul></div>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    {% if w.get("disclosure") %}<p class="disclosure">{{ w.disclosure }}</p>{% endif %}
+  </article>
+
+  <nav class="pager" aria-label="{{ t('pager_work') }}">
+    {% if prev_work %}<a href="{{ p }}/work/{{ prev_work.slug }}.html"><span>{{ t("prev_work") }}</span>{{ prev_work.title }}</a>{% endif %}
+    {% if next_work %}<a class="next" href="{{ p }}/work/{{ next_work.slug }}.html"><span>{{ t("next_work") }}</span>{{ next_work.title }}</a>{% endif %}
+  </nav>
+</main>
+{% endblock %}
