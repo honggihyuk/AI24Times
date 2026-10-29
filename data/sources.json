@@ -1,0 +1,71 @@
+{
+  "lookback_hours": 24,
+  "top_n": 10,
+  "per_source_cap": 3,
+  "reserve_n": 5,
+  "korea_n": 3,
+  "korea_per_source_cap": 2,
+  "sources": [
+    {
+      "id": "techcrunch", "name": "TechCrunch AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/"
+    },
+    {
+      "id": "verge", "name": "The Verge AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+    },
+    {
+      "id": "ars", "name": "Ars Technica AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://arstechnica.com/ai/feed/"
+    },
+    {
+      "id": "wired", "name": "Wired AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://www.wired.com/feed/tag/ai/latest/rss"
+    },
+    {
+      "id": "mittr", "name": "MIT Technology Review AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+    },
+    {
+      "id": "decoder", "name": "The Decoder", "kind": "media", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://the-decoder.com/feed/"
+    },
+    {
+      "id": "openai", "name": "OpenAI News", "kind": "official", "pool": "main", "lang": "en", "weight": 3.0,
+      "url": "https://openai.com/news/rss.xml",
+      "exclude_categories": ["Startup", "AI Adoption", "Applied AI", "OpenAI on OpenAI", "Intelligence Age"],
+      "drop_uncategorized": true,
+      "note": "고객 사례·회사 홍보 글이 기사와 함께 온다. 분류 없는 글과 위 분류는 뉴스가 아닌 것으로 본다."
+    },
+    {
+      "id": "deepmind", "name": "Google DeepMind Blog", "kind": "official", "pool": "main", "lang": "en", "weight": 3.0,
+      "url": "https://deepmind.google/blog/rss.xml"
+    },
+    {
+      "id": "googleai", "name": "Google AI Blog", "kind": "official", "pool": "main", "lang": "en", "weight": 2.5,
+      "url": "https://blog.google/technology/ai/rss/"
+    },
+    {
+      "id": "huggingface", "name": "Hugging Face Blog", "kind": "official", "pool": "main", "lang": "en", "weight": 2.0,
+      "url": "https://huggingface.co/blog/feed.xml"
+    },
+    {
+      "id": "aitimes", "name": "AI타임스", "kind": "media", "pool": "main", "lang": "ko", "weight": 2.0,
+      "url": "https://www.aitimes.com/rss/allArticle.xml", "timezone": "+09:00"
+    },
+    {
+      "id": "aitimes_kr", "name": "인공지능신문", "kind": "media", "pool": "korea", "lang": "ko", "weight": 2.0,
+      "url": "https://www.aitimes.kr/rss/allArticle.xml", "timezone": "+09:00"
+    },
+    {
+      "id": "hn", "name": "Hacker News (AI)", "kind": "community", "role": "signal", "lang": "en", "weight": 0,
+      "url": "https://hnrss.org/newest?q=AI+OR+LLM+OR+OpenAI+OR+Anthropic&points=100",
+      "note": "항목 링크가 원문 기사를 가리킨다. 싣지 않고, 개발자 커뮤니티에서도 화제인지 보는 교차보도 신호로만 쓴다."
+    },
+    {
+      "id": "venturebeat", "name": "VentureBeat AI", "kind": "media", "pool": "main", "lang": "en", "weight": 2.0,
+      "url": "https://venturebeat.com/category/ai/feed/", "enabled": false,
+      "note": "2026-10-29 확인 시 HTTP 429. 봇 차단으로 보여 꺼 둠."
+    }
+  ]
+}

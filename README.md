@@ -24,7 +24,16 @@ data/
   glossary.json          용어사전 (slug → 이름·영문 이름·설명·영문 설명)
   briefings/YYYY-MM-DD.json   하루치 브리핑 한 호
   work/<slug>.json       작업 사례 하나 (파일 이름이 주소가 됨)
+  sources.json           기사 수집 출처 (피드 주소·가중치·풀·필터)
+  candidates/YYYY-MM-DD.json  수집·선정 결과 (파이프라인이 만듦)
+  raw/                   --save-raw 로 저장한 피드 원본 (git 제외)
 generator/build.py       빌드 스크립트 (데이터 검증 → 렌더링 → 정적 파일 복사)
+pipeline/                기사 수집·선정 파이프라인
+  collect.py             실행·기록 (python -m pipeline.collect)
+  feeds.py               피드 가져오기·해석 (RSS 2.0 / RSS 1.0 / Atom)
+  select.py              거르기 → 점수 → 같은 사건 묶기 → 고르기
+  text.py                제목 키워드 (한국어·영어 공통 열쇠), 제목·주소 비교
+  verify.py              원문 확인 (본문이 읽히는지)
 templates/               Jinja 템플릿
   base.html.j2           상단 바·바닥, 테마 초기화
   _macros.html.j2        페이지 머리, 섹션 머리, 기사 한 건, 작업 스크린샷
@@ -39,7 +48,7 @@ static/                  dist/assets/ 로 그대로 복사됨
   css/site.css           레이아웃·컴포넌트 (토큰만 사용)
   js/site.js             테마 전환, 배너 넘기기, 용어 패널, 목차 하이라이트, 검색
   work/<slug>/           작업 사례 이미지
-tests/test_build.py
+tests/test_build.py, tests/test_pipeline.py
 ```
 
 ## 빌드 결과
@@ -55,6 +64,52 @@ tests/test_build.py
 | `/feed.xml` | RSS (최근 20호) |
 | `/en/...` | 위 모든 페이지의 영어판 (`/en/feed.xml`, `/en/search-index.json` 포함) |
 | `/search-index.json` | 지난 호 검색이 쓰는 색인 |
+
+## 기사 수집·선정 파이프라인
+
+피드에서 지난 24시간 기사를 모아 그날의 후보 10건(+ 국내 소식 3건, 예비 5건)을 고릅니다.
+요약·번역은 하지 않습니다. 결과는 `data/candidates/YYYY-MM-DD.json` 에 남습니다.
+
+```bash
+python -m pipeline.collect                  # 지금 기준, 원문 확인 포함
+python -m pipeline.collect --no-verify      # 원문 확인 없이 (빠름)
+python -m pipeline.collect --save-raw       # 받은 피드를 data/raw/날짜/ 에 저장
+python -m pipeline.collect --from-raw data/raw/2026-10-29 --now 2026-10-29T08:00+09:00
+                                            # 저장해 둔 피드로 그날 실행을 그대로 재현
+python -m pipeline.collect --dry-run        # 파일을 쓰지 않고 요약만 출력
+```
+
+**단계**
+
+1. **수집**: `data/sources.json` 의 피드를 받습니다. 실패하면 이유(HTTP 코드, 응답 앞부분, 해석 오류)를 남깁니다.
+2. **24시간 필터**: 날짜가 없는 글은 뺍니다. 날짜 없는 글을 새 글로 보면 몇 달 전 글이 오늘 소식이 됩니다.
+3. **거르기**
+   - `not_news`: 출처별로 지정한 분류(`exclude_categories`)이거나, 분류가 없는 글(`drop_uncategorized`)
+   - `promo`: 제목의 홍보 표현이나 `sponsored`·광고·후원 분류
+   - `already_published`: 지난 브리핑과 이전 후보에 이미 실린 주소·제목(잘린 제목도 앞부분으로 잡음)
+   - `duplicate_link`: 여러 피드가 같은 주소를 실었으면 가중치 높은 쪽만 남김
+   - `signal_only`: `role: "signal"` 출처(Hacker News)는 싣지 않고 교차보도 신호로만 씀
+4. **점수** = 출처 가중치 + 교차보도(같은 사건을 다룬 다른 출처 1곳당 1.0, 최대 3.0) + 신선도(최대 1.0)
+   - 같은 사건 판정은 제목 키워드로 합니다. 한국어·영어 표기를 같은 열쇠로 모읍니다(구글/Google, 오픈AI/OpenAI 등, `pipeline/text.py` 의 `ALIASES`).
+   - "구글", "제미나이"처럼 그날 여러 기사에 나온 말만 겹쳐서는 같은 사건이 아닙니다. 그날 드물게 나온 말이 하나 이상 겹쳐야 합니다.
+5. **고르기**: 점수순으로 훑으며 한 매체 하루 3건, 같은 사건 1건만 고릅니다.
+   - 10건을 못 채우면 매체 상한을 한 칸씩만 올리고, 몇까지 올렸는지 `source_cap_used` 에 남깁니다.
+   - 같은 사건 규칙은 풀지 않습니다.
+6. **원문 확인**: 고른 기사의 원문을 열어 본문 문단이 600자 이상 읽히는지 봅니다. 못 읽으면 빼고 다시 고릅니다. 본문은 저장하지 않습니다.
+7. **기록**: 단계별 건수(`funnel`), 출처별 상태(`sources`), 고른 기사와 점수 내역(`selected`), 예비(`reserve`), 국내(`korea`), 교체 내역(`substitutions`), 안 뽑힌 이유(`not_selected`), 경고(`warnings`)
+
+**출처 추가·조정**은 `data/sources.json` 에서 합니다.
+
+| 필드 | 뜻 |
+|---|---|
+| `weight` | 출처 가중치 |
+| `pool` | `main`(메인 10건) 또는 `korea`(국내 소식) |
+| `role` | `signal` 이면 싣지 않고 교차보도 신호로만 씀 |
+| `kind` | `media` / `official` / `community` |
+| `timezone` | 시간대 없는 날짜를 읽을 때 쓸 시간대 (예: `+09:00`) |
+| `exclude_categories`, `drop_uncategorized` | 뉴스가 아닌 글을 거르는 분류 규칙 |
+| `require_ai_terms` | AI 관련 단어가 없으면 거름 |
+| `enabled` | `false` 면 수집하지 않음 |
 
 ## 브리핑 JSON 형식
 
@@ -159,7 +214,9 @@ tests/test_build.py
 
 ## 아직 없는 것
 
-- 기사 수집·선정·요약 파이프라인 (지금은 JSON을 직접 넣어야 함)
+- 후보(`data/candidates/`)에서 요약·시사점·번역을 써서 브리핑 JSON을 만드는 단계 (지금은 직접 써야 함)
+- 파이프라인을 매일 정해진 시각에 돌리는 예약 실행
+- 주제 분류 자동화
 - 이메일 구독, OG 이미지 생성, 주간·월간 회고 페이지
 - 브라우저 언어에 맞춰 다른 언어판을 권하는 안내 배너
 - 배포 설정. 어떤 정적 호스팅이든 `python -m generator.build` 후 `dist/` 를 올리면 됩니다.
