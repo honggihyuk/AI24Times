@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-29",
+  "stats": { "scanned": 1240, "candidates": 72 },
+  "insight": {
+    "headline": "[예시] 모델은 작아지고, 돈은 추론 쪽으로 몰린다",
+    "body": [
+      "이 브리핑은 레이아웃을 확인하기 위한 예시 데이터입니다. 실제 뉴스가 아닙니다.",
+      "오늘 예시로 넣은 기사들은 한 방향을 가리킵니다. 큰 모델 하나를 더 키우기보다, 작은 오픈 웨이트 모델을 싸게 돌리고 추론 비용을 낮추는 쪽에 관심이 모이고 있습니다."
+    ],
+    "watch": "다음 주 예시 기업들의 실적 발표에서 추론 매출 비중이 따로 공개되는지"
+  },
+  "articles": [
+    {
+      "rank": 1,
+      "title": "[예시] 한 연구소가 노트북에서 도는 소형 오픈 웨이트 모델 공개",
+      "title_original": "Example Lab releases a small open-weight model",
+      "source": "Example Lab Blog",
+      "url": "https://example.com/blog/small-model",
+      "published": "2026-10-28",
+      "topic": "models",
+      "official": true,
+      "coverage": 4,
+      "summary": "예시 연구소가 일반 노트북에서도 실행되는 소형 오픈 웨이트 모델을 공개했다는 가상의 기사입니다. 컨텍스트 창은 12만 8천 토큰이라고 적었습니다.",
+      "implication": "작은 모델이 쓸 만해지면 회사가 데이터를 밖으로 보내지 않고도 AI를 쓸 수 있습니다. 클라우드 API 가격에도 압력이 됩니다.",
+      "related": [
+        { "source": "Example Tech News", "url": "https://example.org/news/1" },
+        { "source": "Sample AI Weekly", "url": "https://example.net/weekly/1" }
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "[예시] 클라우드 업체, 추론 전용 칩 임대 가격 30% 인하",
+      "title_original": "Cloud provider cuts inference chip prices",
+      "source": "Example Tech News",
+      "url": "https://example.org/news/2",
+      "published": "2026-10-28",
+      "topic": "business",
+      "coverage": 2,
+      "summary": "가상의 클라우드 업체가 추론 전용 칩의 시간당 임대료를 30% 낮췄다는 예시 기사입니다. 추론 비용이 운영비의 대부분이라는 고객 불만이 배경으로 나옵니다.",
+      "implication": "가격 경쟁이 학습 단계에서 추론 단계로 옮겨 가고 있다는 신호로 읽을 수 있습니다."
+    },
+    {
+      "rank": 3,
+      "title": "[예시] 메신저 앱에 일정 잡는 에이전트 기능 추가",
+      "source": "Sample AI Weekly",
+      "url": "https://example.net/weekly/3",
+      "published": "2026-10-28",
+      "topic": "products",
+      "summary": "예시 메신저 앱이 대화 내용을 보고 일정을 대신 잡아 주는 에이전트 기능을 넣었다는 가상의 기사입니다. 사용자가 확인 버튼을 눌러야 실제로 예약됩니다.",
+      "implication": "에이전트가 '확인 후 실행' 방식으로 일상 앱에 들어오는 흐름입니다. 잘못된 예약을 누가 책임지는지가 다음 쟁점이 됩니다."
+    },
+    {
+      "rank": 4,
+      "title": "[예시] 한 국가, AI 생성 이미지 표시 의무 시행령 발표",
+      "source": "Example Policy Desk",
+      "url": "https://example.org/policy/4",
+      "published": "2026-10-27",
+      "topic": "policy",
+      "official": true,
+      "summary": "가상의 국가가 광고에 쓰인 AI 생성 이미지에 표시를 의무화하는 시행령을 발표했다는 예시 기사입니다.",
+      "implication": "표시 의무가 광고에서 시작해 다른 영역으로 넓어질지 지켜볼 만합니다."
+    },
+    {
+      "rank": 5,
+      "title": "[예시] 파인튜닝한 모델에서 학습 데이터가 새어 나오는 사례 보고",
+      "source": "Example Security Research",
+      "url": "https://example.com/research/5",
+      "published": "2026-10-27",
+      "topic": "safety",
+      "summary": "예시 보안 연구팀이 고객 데이터로 파인튜닝한 모델에 특정 질문을 던지면 학습 데이터 일부가 그대로 나온다고 보고했다는 가상의 기사입니다.",
+      "implication": "자기 데이터로 모델을 맞춤 학습하려는 기업은 학습 전에 개인정보를 걸러 내는 단계를 따로 둬야 합니다."
+    }
+  ],
+  "korea": [
+    {
+      "title": "[예시] 국내 한 지자체, 민원 안내 챗봇 시범 운영",
+      "summary": "가상의 지자체가 민원 안내용 챗봇을 한 달간 시범 운영한다는 예시 기사입니다.",
+      "source": "예시 일보",
+      "url": "https://example.kr/news/1"
+    }
+  ]
+}

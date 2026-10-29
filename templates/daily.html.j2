@@ -1,0 +1,84 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import article_card %}
+
+{% block title %}{% if is_home %}{{ site.name }} · {{ b.insight.headline }}{% else %}{{ b.date }} · {{ b.insight.headline }} · {{ site.name }}{% endif %}{% endblock %}
+{% block description %}{{ b.insight.body[-1] }}{% endblock %}
+{% block body_class %}page-daily{% endblock %}
+
+{% block main %}
+<div class="dateline">
+  <time datetime="{{ b.date }}">{{ b.date|kdate }}</time>
+  <span>약 {{ reading_min }}분</span>
+  {% if b.get("stats") %}<span>{{ b.stats.scanned|comma }}건 중 {{ b.articles|length }}건</span>{% endif %}
+</div>
+
+<section class="lede" aria-labelledby="lede-title">
+  <p class="kicker">오늘의 흐름</p>
+  <h1 class="lede-title" id="lede-title">{{ b.insight.headline }}</h1>
+  <div class="lede-body">
+    {% for p in b.insight.body %}<p>{{ p|link_terms }}</p>{% endfor %}
+  </div>
+  {% if b.insight.get("watch") %}
+  <p class="lede-watch"><span class="lede-watch-label">다음에 볼 것</span>{{ b.insight.watch }}</p>
+  {% endif %}
+</section>
+
+<div class="daily-grid">
+  <nav class="toc" aria-label="오늘의 기사 목록">
+    <h2 class="toc-title">오늘의 기사 {{ b.articles|length }}건</h2>
+    <ol class="toc-list">
+      {% for a in b.articles %}
+      <li><a href="#a{{ a.rank }}"><span class="toc-num">{{ "%02d"|format(a.rank) }}</span><span class="toc-text">{{ a.title }}</span></a></li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <div class="cards">
+    {% for a in b.articles %}{{ article_card(a, topics) }}{% endfor %}
+
+    {% if b.korea %}
+    <section class="side-section" aria-labelledby="korea-title">
+      <h2 class="section-title" id="korea-title">국내 소식</h2>
+      <ul class="korea-list">
+        {% for k in b.korea %}
+        <li>
+          <a href="{{ k.url }}" target="_blank" rel="noopener">{{ k.title }}</a>
+          <p>{{ k.summary }}</p>
+          <p class="korea-source">{{ k.source }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    {% if terms %}
+    <section class="side-section" aria-labelledby="terms-title">
+      <h2 class="section-title" id="terms-title">이번 호에 나온 용어</h2>
+      <ul class="term-chips">
+        {% for slug, t in terms.items() %}
+        <li><button type="button" class="term chip" data-term="{{ slug }}">{{ t.name }}</button></li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <nav class="issue-nav" aria-label="다른 호">
+      {% if older %}<a class="issue-nav-older" href="/archive/{{ older.date }}.html"><span>이전 호</span>{{ older.date }}</a>{% else %}<span></span>{% endif %}
+      {% if newer %}<a class="issue-nav-newer" href="/archive/{{ newer.date }}.html"><span>다음 호</span>{{ newer.date }}</a>{% endif %}
+    </nav>
+  </div>
+</div>
+{% endblock %}
+
+{% block overlays %}
+<div class="term-backdrop" id="term-backdrop" hidden></div>
+<aside class="term-panel" id="term-panel" role="dialog" aria-modal="true" aria-labelledby="term-panel-title" hidden>
+  <button type="button" class="term-panel-close" id="term-panel-close" aria-label="닫기">×</button>
+  <p class="kicker">용어 설명</p>
+  <h2 class="term-panel-title" id="term-panel-title"></h2>
+  <p class="term-panel-en" id="term-panel-en" lang="en"></p>
+  <p class="term-panel-body" id="term-panel-body"></p>
+  <a class="term-panel-more" id="term-panel-more" href="/glossary.html">용어 전체 보기 →</a>
+</aside>
+<script type="application/json" id="glossary-data">{{ terms|tojson }}</script>
+{% endblock %}

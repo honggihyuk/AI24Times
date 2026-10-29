@@ -1,0 +1,36 @@
+{% macro article_card(a, topics) %}
+<article class="card" id="a{{ a.rank }}">
+  <div class="card-meta">
+    <span class="card-rank">{{ "%02d"|format(a.rank) }}</span>
+    <a class="chip" href="/topics/{{ a.topic }}.html">{{ topics[a.topic].name }}</a>
+    <span class="card-source">{{ a.source }}</span>
+    {% if a.get("official") %}<span class="badge">공식 발표</span>{% endif %}
+    {% if a.get("coverage", 0) > 1 %}<span class="badge badge-quiet">{{ a.coverage }}개 매체 보도</span>{% endif %}
+  </div>
+  <h2 class="card-title">
+    <a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}<span class="visually-hidden"> (원문, 새 창)</span></a>
+  </h2>
+  {% if a.get("title_original") %}<p class="card-original" lang="en">{{ a.title_original }}</p>{% endif %}
+  <p class="card-summary">{{ a.summary|link_terms }}</p>
+  {% if a.get("implication") %}
+  <details class="card-why">
+    <summary>왜 중요한가</summary>
+    <p>{{ a.implication|link_terms }}</p>
+  </details>
+  {% endif %}
+  {% if a.get("related") %}
+  <p class="card-related">
+    <span class="card-related-label">함께 보도</span>
+    {% for r in a.related %}<a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source }}</a>{% if not loop.last %}<span aria-hidden="true"> · </span>{% endif %}{% endfor %}
+  </p>
+  {% endif %}
+</article>
+{% endmacro %}
+
+{% macro article_row(a, topics, show_date=true) %}
+<li class="row">
+  {% if show_date %}<a class="row-date" href="/archive/{{ a.date }}.html#a{{ a.rank }}">{{ a.date }}</a>{% endif %}
+  <a class="row-title" href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a>
+  <span class="row-source">{{ a.source }}</span>
+</li>
+{% endmacro %}

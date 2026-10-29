@@ -1,0 +1,36 @@
+{% extends "base.html.j2" %}
+
+{% block title %}지난 호 · {{ site.name }}{% endblock %}
+{% block description %}{{ site.name }}가 지금까지 낸 브리핑 {{ total }}호를 날짜별로 모았습니다.{% endblock %}
+{% block body_class %}page-archive{% endblock %}
+
+{% block main %}
+<header class="page-header">
+  <p class="kicker">지난 호</p>
+  <h1 class="page-title">지금까지 {{ total }}호</h1>
+</header>
+
+<div class="search" data-search>
+  <label class="visually-hidden" for="search-input">지난 기사 검색</label>
+  <input class="search-input" id="search-input" type="search" placeholder="제목, 매체, 내용으로 찾기" autocomplete="off">
+  <p class="search-status" id="search-status" aria-live="polite"></p>
+  <ul class="row-list search-results" id="search-results"></ul>
+</div>
+
+{% for month, items in by_month.items() %}
+<section class="month" aria-labelledby="m-{{ month }}">
+  <h2 class="section-title" id="m-{{ month }}">{{ month[:4] }}년 {{ month[5:]|int }}월</h2>
+  <ul class="issue-list">
+    {% for b in items %}
+    <li>
+      <a href="/archive/{{ b.date }}.html">
+        <time datetime="{{ b.date }}">{{ b.date[5:] }}</time>
+        <span class="issue-headline">{{ b.insight.headline }}</span>
+        <span class="issue-count">{{ b.articles|length }}건</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+{% endblock %}

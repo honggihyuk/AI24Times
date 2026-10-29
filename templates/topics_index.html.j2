@@ -1,0 +1,23 @@
+{% extends "base.html.j2" %}
+
+{% block title %}주제별 · {{ site.name }}{% endblock %}
+{% block body_class %}page-topics{% endblock %}
+
+{% block main %}
+<header class="page-header">
+  <p class="kicker">주제별</p>
+  <h1 class="page-title">주제로 모아 보기</h1>
+</header>
+
+<ul class="topic-grid">
+  {% for slug, t in topics.items() %}
+  <li>
+    <a class="topic-tile" href="/topics/{{ slug }}.html">
+      <span class="topic-tile-name">{{ t.name }}</span>
+      <span class="topic-tile-desc">{{ t.description }}</span>
+      <span class="topic-tile-count">{{ by_topic[slug]|length }}건</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

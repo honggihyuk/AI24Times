@@ -1,0 +1,14 @@
+{
+  "name": "AI24Times",
+  "tagline": "지난 24시간의 AI 소식, 아침 10분이면 정리됩니다",
+  "description": "AI24Times는 매일 아침 지난 24시간 동안 나온 AI 소식을 골라 요약하고, 왜 중요한지 짚어 드립니다.",
+  "base_url": "https://ai24times.example",
+  "publish_hour_kst": 7,
+  "topics": {
+    "models": { "name": "모델·연구", "description": "새 모델 공개, 벤치마크, 연구 논문" },
+    "products": { "name": "제품·서비스", "description": "사람들이 실제로 쓰는 AI 제품의 변화" },
+    "business": { "name": "산업·투자", "description": "투자, 인수, 실적, 인프라" },
+    "policy": { "name": "정책·규제", "description": "각국 정부와 기관의 AI 규칙" },
+    "safety": { "name": "안전·신뢰", "description": "오용, 보안, 평가, 저작권" }
+  }
+}
