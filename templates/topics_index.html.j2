@@ -1,23 +1,24 @@
 {% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening %}
 
-{% block title %}주제별 · {{ site.name }}{% endblock %}
+{% block title %}{{ t("nav_topics") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("topics_lead") }}{% endblock %}
 {% block body_class %}page-topics{% endblock %}
 
-{% block main %}
-<header class="page-header">
-  <p class="kicker">주제별</p>
-  <h1 class="page-title">주제로 모아 보기</h1>
-</header>
+{% block content %}
+{{ opening([(t("nav_topics"), none)], t("nav_topics"), t("topics_lead")) }}
 
-<ul class="topic-grid">
-  {% for slug, t in topics.items() %}
-  <li>
-    <a class="topic-tile" href="/topics/{{ slug }}.html">
-      <span class="topic-tile-name">{{ t.name }}</span>
-      <span class="topic-tile-desc">{{ t.description }}</span>
-      <span class="topic-tile-count">{{ by_topic[slug]|length }}건</span>
-    </a>
-  </li>
-  {% endfor %}
-</ul>
+<main id="main" class="wrap one">
+  <ul class="topic-grid">
+    {% for slug, topic in topics.items() %}
+    <li>
+      <a href="{{ p }}/topics/{{ slug }}.html">
+        <span class="n">{{ topic.name }}</span>
+        <span class="d">{{ topic.description }}</span>
+        <span class="c">{{ t("articles_n", n=by_topic[slug]|length) }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</main>
 {% endblock %}

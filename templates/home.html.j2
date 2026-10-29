@@ -1,0 +1,95 @@
+{% extends "base.html.j2" %}
+{% from "_macros.html.j2" import sec_head, shot %}
+
+{% block title %}{{ site.name }} · {{ site.tagline }}{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<section class="banner mesh" aria-roledescription="carousel" aria-label="{{ t('banner_label') }}" data-carousel>
+  <div class="wrap banner-in">
+    <button class="arr" type="button" data-prev aria-label="{{ t('prev_slide') }}" hidden>‹</button>
+    <div>
+      {% for b in slides %}
+      <a class="slide" href="{{ p }}/archive/{{ b.date }}.html" data-slide aria-roledescription="slide"
+         aria-label="{{ loop.index }} / {{ slides|length }}" {% if not loop.first %}hidden{% endif %}>
+        <p class="k">{{ t("slide_today") if loop.first else t("slide_past") }} · {{ b.date|kdate }} · {{ t("issue_no", n=b.no) }}</p>
+        <h2>{{ b.insight.headline }}</h2>
+        <p class="lead">{{ b.insight.body[-1] }}</p>
+        <span class="go">{{ t("read_full") }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    <button class="arr" type="button" data-next aria-label="{{ t('next_slide') }}" hidden>›</button>
+  </div>
+  {% if slides|length > 1 %}
+  <div class="dots" data-dots hidden>
+    {% for b in slides %}<button type="button" aria-label="{{ t('dot_label', date=b.date) }}" {% if loop.first %}aria-current="true"{% endif %}></button>{% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<div class="wrap two">
+  <main id="main">
+    <section class="block" aria-labelledby="sec-briefing">
+      {{ sec_head(t("nav_briefings"), t("briefings_desc"), "/archive/", t("all_briefings"), id="sec-briefing") }}
+      {% for b in recent %}
+      <article class="row">
+        <div class="t">
+          <h3><a href="{{ p }}/archive/{{ b.date }}.html">{{ b.insight.headline }}</a></h3>
+          <p>{{ b.insight.body[-1] }}</p>
+          <div class="sub">
+            <time datetime="{{ b.date }}">{{ b.date }}</time>
+            <span aria-hidden="true">·</span><b>{{ t("issue_no", n=b.no) }}</b>
+            <span aria-hidden="true">·</span><span>{{ t("articles_n", n=b.articles|length) }}</span>
+          </div>
+        </div>
+        <a class="thumb mesh tone-{{ loop.index0 % 3 }}" href="{{ p }}/archive/{{ b.date }}.html" tabindex="-1" aria-hidden="true"><span>{{ b.date|dotdate }}</span></a>
+      </article>
+      {% endfor %}
+    </section>
+
+    {% if featured %}
+    <section class="block" aria-labelledby="sec-work">
+      {{ sec_head(t("work_section"), t("work_section_desc"), "/work/", t("all_work"), id="sec-work") }}
+      <div class="previews">
+        {% for w in featured %}
+        <a class="preview" href="{{ p }}/work/{{ w.slug }}.html">
+          {{ shot(w, loop.index0) }}
+          <span class="cat">{{ w.category }}</span>
+          <h3>{{ w.title }}</h3>
+          <p>{{ t("process_n", n=w.process|length) }}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </main>
+
+  <aside class="side" aria-label="{{ t('side_label') }}">
+    <div class="box">
+      <p class="sh">{{ t("side_today") }}</p>
+      <ol class="side-list">
+        {% for a in latest.articles %}
+        <li><a href="{{ p }}/archive/{{ latest.date }}.html#a{{ a.rank }}">{{ a.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="box">
+      <div class="who">
+        <span class="avatar mesh" aria-hidden="true">{{ site.author.name[:1] }}</span>
+        <span><b>{{ site.author.name }}</b><span>{{ site.author.role }}</span></span>
+      </div>
+      <p>{{ site.author.bio }}</p>
+      {% for l in site.author.links %}<a class="side-link" href="{{ l.url|local }}">{{ l.label }}</a>{% endfor %}
+      <a class="to" href="{{ p }}/work/">{{ t("see_work") }}</a>
+    </div>
+
+    <div class="box">
+      <p class="sh">{{ t("rss_title") }}</p>
+      <p>{{ t("rss_desc", hh="%02d"|format(site.publish_hour_kst)) }}</p>
+      <a class="to" href="{{ p }}/feed.xml">{{ t("rss_open") }}</a>
+    </div>
+  </aside>
+</div>
+{% endblock %}

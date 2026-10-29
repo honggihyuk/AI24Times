@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{{ site.name }}</title>
-    <link>{{ site.base_url }}/</link>
+    <link>{{ site.base_url }}{{ p }}/</link>
     <description>{{ site.description }}</description>
-    <language>ko</language>
+    <language>{{ lang }}</language>
     <lastBuildDate>{{ last_build }}</lastBuildDate>
-    <atom:link href="{{ site.base_url }}/feed.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="{{ site.base_url }}{{ p }}/feed.xml" rel="self" type="application/rss+xml"/>
     {% for b in items %}
     <item>
       <title>{{ b.date }} · {{ b.insight.headline }}</title>
-      <link>{{ site.base_url }}/archive/{{ b.date }}.html</link>
-      <guid isPermaLink="true">{{ site.base_url }}/archive/{{ b.date }}.html</guid>
+      <link>{{ site.base_url }}{{ p }}/archive/{{ b.date }}.html</link>
+      <guid isPermaLink="true">{{ site.base_url }}{{ p }}/archive/{{ b.date }}.html</guid>
       <pubDate>{{ b.pub_date }}</pubDate>
       <description>{{ b.insight.body|join(" ") }}</description>
     </item>

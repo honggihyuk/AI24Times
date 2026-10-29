@@ -1,21 +1,21 @@
 {% extends "base.html.j2" %}
+{% from "_macros.html.j2" import opening %}
 
-{% block title %}용어 · {{ site.name }}{% endblock %}
-{% block description %}브리핑에 나오는 AI 용어 {{ glossary|length }}개를 쉬운 말로 풀었습니다.{% endblock %}
+{% block title %}{{ t("nav_glossary") }} · {{ site.name }}{% endblock %}
+{% block description %}{{ t("glossary_lead", n=glossary|length) }}{% endblock %}
 {% block body_class %}page-glossary{% endblock %}
 
-{% block main %}
-<header class="page-header">
-  <p class="kicker">용어</p>
-  <h1 class="page-title">AI 용어 {{ glossary|length }}개</h1>
-</header>
+{% block content %}
+{{ opening([(t("nav_glossary"), none)], t("nav_glossary"), t("glossary_lead", n=glossary|length)) }}
 
-<dl class="glossary">
-  {% for slug, t in glossary.items() %}
-  <div class="glossary-item" id="{{ slug }}">
-    <dt>{{ t.name }} <span class="glossary-en" lang="en">{{ t.en }}</span></dt>
-    <dd>{{ t.body }}</dd>
-  </div>
-  {% endfor %}
-</dl>
+<main id="main" class="wrap one narrow">
+  <dl class="glossary">
+    {% for slug, g in glossary.items() %}
+    <div class="glossary-item" id="{{ slug }}">
+      <dt>{{ g.name }}{% if g.alt %}<span class="en">{{ g.alt }}</span>{% endif %}</dt>
+      <dd>{{ g.body }}</dd>
+    </div>
+    {% endfor %}
+  </dl>
+</main>
 {% endblock %}

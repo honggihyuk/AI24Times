@@ -2,31 +2,37 @@
   "token": {
     "name": "토큰",
     "en": "Token",
-    "body": "AI 모델이 글을 읽고 쓸 때 쓰는 기본 단위입니다. 한국어는 대략 글자 1~2개가 토큰 하나이고, 사용료도 보통 토큰 수로 매깁니다."
+    "body": "AI 모델이 글을 읽고 쓸 때 쓰는 기본 단위입니다. 한국어는 대략 글자 1~2개가 토큰 하나이고, 사용료도 보통 토큰 수로 매깁니다.",
+    "body_en": "The basic unit an AI model reads and writes. In English a token is roughly three-quarters of a word, and usage is usually billed by token count."
   },
   "open-weight-model": {
     "name": "오픈 웨이트 모델",
     "en": "Open-weight model",
-    "body": "학습된 가중치 파일을 누구나 내려받아 직접 실행할 수 있게 공개한 모델입니다. 학습 데이터와 코드까지 공개하는 '오픈 소스'와는 범위가 다를 수 있습니다."
+    "body": "학습된 가중치 파일을 누구나 내려받아 직접 실행할 수 있게 공개한 모델입니다. 학습 데이터와 코드까지 공개하는 '오픈 소스'와는 범위가 다를 수 있습니다.",
+    "body_en": "A model whose trained weights anyone can download and run. It may not include the training data or code, so it is not always the same as 'open source'."
   },
   "inference-cost": {
     "name": "추론 비용",
     "en": "Inference cost",
-    "body": "이미 학습된 모델에 질문하고 답을 받을 때마다 드는 계산 비용입니다. 사용자가 늘수록 학습 비용보다 커지는 경우가 많습니다."
+    "body": "이미 학습된 모델에 질문하고 답을 받을 때마다 드는 계산 비용입니다. 사용자가 늘수록 학습 비용보다 커지는 경우가 많습니다.",
+    "body_en": "The computing cost of each question sent to an already-trained model. As usage grows, it often exceeds the cost of training."
   },
   "fine-tuning": {
     "name": "파인튜닝",
     "en": "Fine-tuning",
-    "body": "이미 학습된 모델을 특정 업무나 말투에 맞게 적은 양의 데이터로 추가 학습하는 일입니다."
+    "body": "이미 학습된 모델을 특정 업무나 말투에 맞게 적은 양의 데이터로 추가 학습하는 일입니다.",
+    "body_en": "Training an existing model a little more, on a small dataset, so it fits a particular task or tone."
   },
   "agent": {
     "name": "에이전트",
     "en": "Agent",
-    "body": "질문에 답만 하는 대신, 도구를 쓰고 여러 단계를 스스로 이어 가며 일을 끝내도록 만든 AI 시스템입니다."
+    "body": "질문에 답만 하는 대신, 도구를 쓰고 여러 단계를 스스로 이어 가며 일을 끝내도록 만든 AI 시스템입니다.",
+    "body_en": "An AI system that, instead of only answering, uses tools and works through several steps on its own to finish a task."
   },
   "context-window": {
     "name": "컨텍스트 창",
     "en": "Context window",
-    "body": "모델이 한 번에 읽고 기억할 수 있는 입력의 최대 길이입니다. 토큰 수로 표시합니다."
+    "body": "모델이 한 번에 읽고 기억할 수 있는 입력의 최대 길이입니다. 토큰 수로 표시합니다.",
+    "body_en": "The most input a model can read and keep in mind at once, measured in tokens."
   }
 }
